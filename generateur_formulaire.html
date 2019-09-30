@@ -1,267 +1,105 @@
 <!DOCTYPE html>
 <html>
-   <head>
-        <meta charset="UTF-8">
-        <link rel="stylesheet" href="style.css" />
-        <title> Générer vos formulaires </title>
-   </head>
-
-
+  <head>
+    <meta charset="UTF-8">
+    <style>
+      body {
+        margin: 0;
+      }
+      #gauche {
+        float: left;
+        width: 70%;
+        height: 1000px;
+        background-color: #EFECCA;
+      }
+      #droite {
+        background-color: #CEFFF8;
+        height: 1000px;
+        padding : 10px;
+        padding-left: 71%;
+      }
+      span, button, input {
+        margin: 10px;
+      }
+      button:hover:enabled {
+        box-shadow: 5px 5px 5px grey;
+      }    
+    </style>
+    <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+  </head>
   <body>
-
-        <div id="gauche"> 
-        </div>
-
-        <div id="droite">
-                        Utilisez ces boutons pour créer votre formulaire<br><br>
-            <button id="createLabel">Label</button> <br><br>
-            <button id="createTexte">Zone de texte</button> <br> <br>
-            <button id="createButton">Bouton</button> <br> <br>
-
-         </div>
-
-
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-
+    <div id="gauche">
+    </div>
+    <div id="droite">
+      Utilisez ces boutons pour créer votre formulaire<br><br>
+      <button id="btn1" class="btnprincipal">Label</button>
+      <button id="btn2" class="btnprincipal">Zone de texte</button>
+      <button id="btn3" class="btnprincipal">Bouton</button>
+      <hr>
+    </div>
     <script>
-
-    $(function()
-    {
-      // remarque: piste d'amelioration: on aurait pu créer une fonction qui créer le cadre à droite avec en paramètre le cadre à rajouter afin de ne pas répéter les lignes de codes
-
-
-    // chargement des variables pour la performance
-    var createLabel =$('#createLabel'),
-        createTexte =$('#createTexte'),
-        createButton =$('#createButton');
-
-    var divDroite =$("#droite"),
-        divGauche =$('#gauche');
-
-// bouton pour créer un label
-    createLabel.click(function()
-    {
-      // fait apparaitre le cadre en bas à droite avec Le titre TExte du Label, un champ texte et un bouton OK
-
-      // creation du cadre dans une variabe
-
-                 var cadre= "<div id='cadreLabel'><hr> Texte du Label <br> <br> <input id='texteCreaLabel' type='texte'> <input type='submit' id='buttonCreaLabel' value='OK'> </div>";
- 
-
-     // rajout du cadre à la fin de la div droite, ca reste à l'intérieur de cette div
-
-                divDroite.append(cadre);
-
-    // quand on clique sur OK du mini formulaire qui vient d'apparaitre
-
-             $('#buttonCreaLabel').click(function()
-                 {
-                  var texteCreaLabel =$("#texteCreaLabel");
-                  var texteRentre=texteCreaLabel.val();
-
-
-                 // si le champ texte est vide on fait apparaitre un message disant de rentrer du texte
-                 if (texteRentre =='')
-                 {
-
-                 $("#cadreLabel").append("<p> Veuillez rentrer du texte!!! GRRRR! </p>");
-                 
-
-                 }
-                  // création de notre span contenant le mot rentré dans le champ texte en haut à gauche de notre écran
-                 else
-                 {
-                  var nouveauLabel ="<span>"+ texteRentre+"</span>";
-                  divGauche.append(nouveauLabel);
-                  divGauche.append ("<br> <br>");
-
-                 }
-
-
-                  // on fait disparaitre le cadre du formulaire et on le supprime à la fin
-               $("#cadreLabel").fadeOut();
-               $("#cadreLabel").remove();
-
-                   });
-
-
-
-    });
-
-
-
-
-
-
-
-
-// bouton creation de zone de texte. Texte Id doit avoir le meme nom que le label auquel il va se rattacher. Enfin c'est ce que j'ai compris dans les spec.... 
-createTexte.click(function()
-{
-// fait apparaitre le cadre en bas à droite avec Le titre zone de texte, un champ texte et un bouton OK
-
-      // creation du cadre dans une variabe
-
-                 var cadre= "<div id='cadreLabel'><hr> Zone de texte, rentrer l'id de la zone de texte <br> <br> <input id='texteCreaText' type='texte'> <input type='submit' id='buttonCreaText' value='OK'> </div>";
- 
-
-     // rajout du cadre à la fin de la div droite, ca reste à l'intérieur de cette div
-
-                divDroite.append(cadre);
-
-    // quand on clique sur OK du mini formulaire qui vient d'apparaitre
-
-$('#buttonCreaText').click(function()
-                 {
-                  var texteCreaText =$("#texteCreaText");
-                  var texteRentre=texteCreaText.val();
-                  
-
-
-                 // si le champ texte est vide on fait apparaitre un message disant de rentrer du texte
-                 if (texteRentre =='')
-                 {
-
-                  // je ne comprends pas pourquoi la fonction delay() ne fonctionne pas...
-
-                 alert("Veuillez rentrer un id !!! GRRRR!").delay("fast");
-                 
-
-                 }
-
-                 else  
-                 {
-                  var indexId=-1;
-                  // on va chercher le span dont le texte contient l'id
-
-                  $('span').each( 
-                    function(index)
-                    {
-                      
-                      if(texteRentre == $(this).text())
-                      {
-                        indexId= index; 
-                      }
-                    }
-
-                    );
-
-                     // si pas de label correspondant à l'ID
-                  if (indexId==-1)
-                  {
-                    // je ne comprends pas non plus pourquoi la fonction setTimeOUt ne fonctionne pas...
-                  setTimeout( function(){
-                 alert("Veuillez rentrer un id qui corresponde à un label pour pouvoir le rattacher");
-                  },3);
-
-                 }
-                  // création de notre champ texte rattaché au label de nom id
-                 else
-                 {
-                  var $nouveauChamp =$('<input/>').attr('type','text').attr({'id': texteRentre});
-                  // on rajoute après la balise <span>
-                  $nouveauChamp.insertAfter($('span')[indexId]);
-
-                 }
-               }
-
-
-                  // on fait disparaitre le cadre du formulaire à la fin
-               $("#cadreLabel").fadeOut();
-               $("#cadreLabel").remove();
-                   });
-
-
-
-
-
-
-
-
-});
-
-
-createButton.click(function()
-{
-
-
-     // si pas de input dans le formulaire, on ne fait rien
-
-      if ($('#gauche > input').length == 0)
-            {
-             alert( 'veuillez créer au moins un champ texte');
-            }
-
-
-       else
-            {
-
-// fait apparaitre le cadre en bas à droite avec Le titre bouton, un champ texte et un bouton OK
-
-      // creation du cadre dans une variabe
-
-                 var cadre= "<div id='cadreLabel'><hr> Saisir le nom du bouton <br> <br> <input id='texteCreaButton' type='texte'> <input type='submit' id='buttonCreaButton' value='OK'> </div>";
- 
-
-     // rajout du cadre à la fin de la div droite, ca reste à l'intérieur de cette div
-
-                divDroite.append(cadre);
-
-    // quand on clique sur OK du mini formulaire qui vient d'apparaitre
-
-             $('#buttonCreaButton').click(function()
-                 {
-   
-                 var texteRentre= $('#texteCreaButton').val();
-
-
-                       // si le champ texte est vide on fait apparaitre un message disant de rentrer du texte
-                           if (texteRentre =='')
-                                {
-
-                      // je ne comprends pas pourquoi la fonction delay() ne fonctionne pas...
-
-                           alert("Veuillez rentrer un nom de bouton !!! GRRRR!").delay("fast");
-                 
-                                 }
-
-                            else
-                               {
-                             var $nouveauBouton = $('<input/>').attr('type','submit').attr({'value': texteRentre});
-                             
-                             // on insere le boutton en bas après le dernier champ texte
-                              $nouveauBouton.appendTo(gauche);
-
-                              // le formulaire est fini, on ne touche plus à rien!
-                              createButton.hide();
-                              createLabel.hide();
-                              createTexte.hide();
-                              $('#texteCreaButton').hide();
-                              $(this).hide();
-                              divDroite.append(" FELICITATION ! VOUS AVEZ GENERE VOTRE FORMULAIRE");
-
-                                }
-
-
-                    divDroite.remove(cadre);
-                    
-                  
-                    
-
-                  });
-
-
-               } // fin du else
-
-});
-
-
-
-          
-
-    });
-
+      $(function(){
+        $('#btn1').click(function(){
+          $('hr').after('<div id="conteneur">Texte du label <input type="text" id="tex"><button id="btnok">OK</button><button id="btnannuler">Annuler</button></div>');
+          $('.btnprincipal').attr('disabled','disabled');
+          $('#conteneur').hide().fadeIn(2000);
+          $('#tex').focus();
+          $('#btnok').click(function(){
+            var lid =  '<span>' + $('#tex').val() + '</span>';
+            $('#gauche').append(lid);
+            $('#conteneur').fadeOut(2000,function(){
+              $('#conteneur').remove();
+              $('.btnprincipal').removeAttr('disabled');
+            });
+          });
+          $('#btnannuler').click(function(){
+            $('#conteneur').fadeOut(2000,function(){
+              $('#conteneur').remove();
+              $('.btnprincipal').removeAttr('disabled');
+            });
+          });  
+        });
+        $('#btn2').click(function(){
+          $('hr').after('<div id="conteneur">id de la zone de texte <input type="text" id="tex"><button id="btnok">OK</button><button id="btnannuler">Annuler</button></div>');
+          $('.btnprincipal').attr('disabled','disabled');
+          $('#conteneur').hide().fadeIn(2000);
+          $('#tex').focus();
+          $('#btnok').click(function(){
+            var lid =  '<input type="text" id="' + $('#tex').val() + '"><br>';
+            $('#gauche').append(lid);
+            $('#conteneur').fadeOut(2000,function(){
+              $('#conteneur').remove();
+              $('.btnprincipal').removeAttr('disabled');
+            });
+          });
+          $('#btnannuler').click(function(){
+            $('#conteneur').fadeOut(2000,function(){
+              $('#conteneur').remove();
+              $('.btnprincipal').removeAttr('disabled');
+            });
+          });  
+        });
+        $('#btn3').click(function(){
+          $('hr').after('<div id="conteneur">Texte du bouton <input type="text" id="tex"><button id="btnok">OK</button><button id="btnannuler">Annuler</button></div>');
+          $('.btnprincipal').attr('disabled','disabled');
+          $('#conteneur').hide().fadeIn(2000);
+          $('#tex').focus();
+          $('#btnok').click(function(){
+            var lid =  '<button>' + $('#tex').val() + '</button><br>';
+            $('#gauche').append(lid);
+            $('#conteneur').fadeOut(2000,function(){
+              $('#conteneur').remove();
+              $('.btnprincipal').removeAttr('disabled');
+            });
+          });
+          $('#btnannuler').click(function(){
+            $('#conteneur').fadeOut(2000,function(){
+              $('#conteneur').remove();
+              $('.btnprincipal').removeAttr('disabled');
+            });
+          });  
+        });
+      });
     </script>
   </body>
 </html>
